@@ -59,7 +59,7 @@ async function main() {
     data: {
       id: 1,
       shopName: "Fresh Veg Mart",
-      adminWhatsapp: process.env.ADMIN_WHATSAPP || "919876543210",
+      adminWhatsapp: process.env.ADMIN_WHATSAPP || "917517571339",
       upiId: process.env.SHOP_UPI_ID || "veggieshop@upi",
       upiName: process.env.SHOP_UPI_NAME || "Fresh Veg Mart",
     },
