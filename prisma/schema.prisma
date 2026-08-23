@@ -1,0 +1,69 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  phone     String
+  address   String   @default("")
+  password  String
+  role      String   @default("USER")
+  createdAt DateTime @default(now())
+  orders    Order[]
+}
+
+model Vegetable {
+  id          String   @id @default(cuid())
+  name        String
+  description String   @default("")
+  unit        String   @default("kg")
+  price       Float
+  stockKg     Float    @default(0)
+  emoji       String   @default("🥬")
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Order {
+  id            String      @id @default(cuid())
+  userId        String
+  user          User        @relation(fields: [userId], references: [id])
+  status        String      @default("PENDING")
+  paymentMethod String
+  paymentStatus String      @default("PENDING")
+  address       String
+  phone         String
+  notes         String      @default("")
+  totalAmount   Float
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  items         OrderItem[]
+}
+
+model OrderItem {
+  id            String @id @default(cuid())
+  orderId       String
+  order         Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  vegetableId   String
+  vegetableName String
+  unit          String
+  price         Float
+  quantity      Float
+  lineTotal     Float
+}
+
+model ShopSettings {
+  id            Int    @id @default(1)
+  shopName      String @default("Fresh Veg Mart")
+  adminWhatsapp String @default("")
+  upiId         String @default("")
+  upiName       String @default("")
+}
