@@ -4,7 +4,7 @@ import { getAdminWhatsApp, getShopUpi } from "@/lib/whatsapp";
 export async function GET() {
   const upi = getShopUpi();
   return NextResponse.json({
-    shopName: "Fresh Veg Mart",
+    shopName: "Sabzi Bazaar",
     upiId: upi.upiId,
     upiName: upi.upiName,
     whatsappConfigured: Boolean(getAdminWhatsApp()),

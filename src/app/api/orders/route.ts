@@ -16,7 +16,7 @@ const itemSchema = z.object({
 const createSchema = z.object({
   address: z.string().min(5),
   phone: z.string().min(10),
-  paymentMethod: z.enum(["COD", "UPI"]),
+  paymentMethod: z.enum(["COD"]),
   notes: z.string().optional(),
   items: z.array(itemSchema).min(1),
 });

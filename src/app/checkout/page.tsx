@@ -4,18 +4,18 @@ import Link from "next/link";
 import { FormEvent, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { CartItem, cartTotal, clearCart, readCart } from "@/lib/cart";
+import { useI18n } from "@/lib/i18n";
+import { formatQuantity } from "@/lib/qty";
 
 type Me = { name: string; phone: string; address: string } | null;
 
 export default function CheckoutPage() {
+  const { t } = useI18n();
   const router = useRouter();
   const [items, setItems] = useState<CartItem[]>([]);
   const [me, setMe] = useState<Me>(null);
-  const [payment, setPayment] = useState<"COD" | "UPI">("COD");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [upiId, setUpiId] = useState("");
-  const [upiName, setUpiName] = useState("");
 
   useEffect(() => {
     setItems(readCart());
@@ -28,13 +28,6 @@ export default function CheckoutPage() {
         }
         setMe(d.user);
       });
-    fetch("/api/shop")
-      .then((r) => r.json())
-      .then((d) => {
-        if (d.upiId) setUpiId(d.upiId);
-        if (d.upiName) setUpiName(d.upiName);
-      })
-      .catch(() => undefined);
   }, [router]);
 
   const total = cartTotal(items);
@@ -53,7 +46,7 @@ export default function CheckoutPage() {
         address: form.get("address"),
         phone: form.get("phone"),
         notes: form.get("notes"),
-        paymentMethod: payment,
+        paymentMethod: "COD",
         items: items.map((i) => ({
           vegetableId: i.vegetableId,
           quantity: i.quantity,
@@ -82,9 +75,9 @@ export default function CheckoutPage() {
     return (
       <div className="panel">
         <div className="card-form">
-          <h1>Nothing to checkout</h1>
+          <h1>{t("nothingCheckout")}</h1>
           <Link href="/#menu" className="btn">
-            Add vegetables
+            {t("addVeg")}
           </Link>
         </div>
       </div>
@@ -94,25 +87,33 @@ export default function CheckoutPage() {
   return (
     <div className="panel" style={{ maxWidth: 720 }}>
       <form className="card-form" onSubmit={onSubmit}>
-        <h1>Checkout</h1>
+        <h1>{t("checkoutTitle")}</h1>
         <p>
-          Total <strong>₹{total.toFixed(0)}</strong> — the shop will also receive
-          this order on WhatsApp.
+          {t("total")} <strong>₹{total.toFixed(0)}</strong> — {t("checkoutSub")}
         </p>
+
+        <ul style={{ margin: "0 0 1rem", paddingLeft: "1.1rem", fontSize: "0.95rem" }}>
+          {items.map((i) => (
+            <li key={i.vegetableId}>
+              {i.name} — {formatQuantity(i.quantity, i.unit)} (₹
+              {(i.price * i.quantity).toFixed(0)})
+            </li>
+          ))}
+        </ul>
 
         <div className="form-grid">
           <label>
-            Delivery address
+            {t("deliveryAddress")}
             <textarea
               name="address"
               required
               minLength={5}
-              placeholder="House no., street, area, landmark"
+              placeholder={t("addressPh")}
               defaultValue={me?.address || ""}
             />
           </label>
           <label>
-            Phone
+            {t("phone")}
             <input
               name="phone"
               required
@@ -121,65 +122,30 @@ export default function CheckoutPage() {
             />
           </label>
           <label>
-            Notes (optional)
-            <input name="notes" placeholder="e.g. Deliver before 8 AM" />
+            {t("notes")}
+            <input name="notes" placeholder={t("notesPh")} />
           </label>
 
           <div>
             <strong style={{ display: "block", marginBottom: "0.5rem" }}>
-              Payment method
+              {t("payment")}
             </strong>
             <div className="pay-options">
-              <label
-                className={`pay-option ${payment === "COD" ? "selected" : ""}`}
-              >
-                <input
-                  type="radio"
-                  name="pay"
-                  checked={payment === "COD"}
-                  onChange={() => setPayment("COD")}
-                />
+              <label className="pay-option selected">
+                <input type="radio" name="pay" checked readOnly />
                 <span>
-                  <strong>Cash on Delivery (COD)</strong>
+                  <strong>{t("codTitle")}</strong>
                   <br />
-                  Pay in cash when your order arrives — simplest for local shops.
-                </span>
-              </label>
-              <label
-                className={`pay-option ${payment === "UPI" ? "selected" : ""}`}
-              >
-                <input
-                  type="radio"
-                  name="pay"
-                  checked={payment === "UPI"}
-                  onChange={() => setPayment("UPI")}
-                />
-                <span>
-                  <strong>UPI (GPay / PhonePe / Paytm)</strong>
-                  <br />
-                  Pay to the shop UPI ID — admin will confirm after payment.
+                  {t("codBody")}
                 </span>
               </label>
             </div>
-            {payment === "UPI" && (
-              <div className="upi-box">
-                <div>
-                  Pay to: <strong>{upiName}</strong>
-                </div>
-                <div>
-                  UPI ID: <strong>{upiId}</strong>
-                </div>
-                <div style={{ marginTop: "0.35rem", fontSize: "0.9rem" }}>
-                  Amount: ₹{total.toFixed(0)} — mention UPI in the order notes.
-                </div>
-              </div>
-            )}
           </div>
 
           {error && <p className="error">{error}</p>}
 
           <button className="btn" type="submit" disabled={loading}>
-            {loading ? "Placing order…" : "Place order & notify WhatsApp"}
+            {loading ? t("placing") : t("placeOrder")}
           </button>
         </div>
       </form>

@@ -58,10 +58,10 @@ async function main() {
   await prisma.shopSettings.create({
     data: {
       id: 1,
-      shopName: "Fresh Veg Mart",
+      shopName: "Sabzi Bazaar",
       adminWhatsapp: process.env.ADMIN_WHATSAPP || "919325667461",
       upiId: process.env.SHOP_UPI_ID || "veggieshop@upi",
-      upiName: process.env.SHOP_UPI_NAME || "Fresh Veg Mart",
+      upiName: process.env.SHOP_UPI_NAME || "Sabzi Bazaar",
     },
   });
 

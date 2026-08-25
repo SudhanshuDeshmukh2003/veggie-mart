@@ -280,6 +280,69 @@ a {
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
+.veg-item-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.veg-item-top {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.85rem;
+  align-items: start;
+}
+
+.qty-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.qty-pill {
+  border: 1px solid var(--line);
+  background: #fff;
+  border-radius: 999px;
+  padding: 0.35rem 0.7rem;
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--soil);
+}
+
+.qty-pill.active {
+  background: var(--leaf);
+  border-color: var(--leaf);
+  color: #f7fbf8;
+}
+
+.qty-pill:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.lang-select select {
+  width: auto;
+  min-width: 4.5rem;
+  padding: 0.35rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 .veg-item:hover {
   transform: translateY(-3px);
   box-shadow: var(--shadow);

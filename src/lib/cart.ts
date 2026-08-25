@@ -28,7 +28,8 @@ export function addToCart(item: Omit<CartItem, "quantity">, qty = 1) {
   const cart = readCart();
   const existing = cart.find((c) => c.vegetableId === item.vegetableId);
   if (existing) {
-    existing.quantity += qty;
+    // Replace with newly selected pack size (1kg / ½kg / 250g / 125g)
+    existing.quantity = qty;
   } else {
     cart.push({ ...item, quantity: qty });
   }

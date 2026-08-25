@@ -7,17 +7,18 @@ async function main() {
     where: { id: 1 },
     update: {
       adminWhatsapp: "919325667461",
-      shopName: "Fresh Veg Mart",
+      shopName: "Sabzi Bazaar",
+      upiName: "Sabzi Bazaar",
     },
     create: {
       id: 1,
       adminWhatsapp: "919325667461",
-      shopName: "Fresh Veg Mart",
+      shopName: "Sabzi Bazaar",
       upiId: "veggieshop@upi",
-      upiName: "Fresh Veg Mart",
+      upiName: "Sabzi Bazaar",
     },
   });
-  console.log("Shop settings updated with WhatsApp 919325667461");
+  console.log("Shop settings updated — Sabzi Bazaar / WhatsApp 919325667461");
 }
 
 main()

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { readCart } from "@/lib/cart";
+import { useI18n, type Lang } from "@/lib/i18n";
 
 type User = {
   id: string;
@@ -12,6 +13,7 @@ type User = {
 } | null;
 
 export function SiteHeader() {
+  const { t, lang, setLang } = useI18n();
   const [user, setUser] = useState<User>(null);
   const [cartCount, setCartCount] = useState(0);
 
@@ -23,7 +25,7 @@ export function SiteHeader() {
 
     const sync = () => {
       const cart = readCart();
-      setCartCount(cart.reduce((n, i) => n + i.quantity, 0));
+      setCartCount(cart.length);
     };
     sync();
     window.addEventListener("cart-updated", sync);
@@ -48,26 +50,41 @@ export function SiteHeader() {
             🥬
           </span>
           <span className="brand-text">
-            Fresh <em>Veg Mart</em>
+            Sabzi <em>Bazaar</em>
           </span>
         </Link>
 
         <nav className="nav-links">
-          <Link href="/#menu">Vegetables</Link>
-          <Link href="/cart">Cart{cartCount > 0 ? ` (${cartCount})` : ""}</Link>
+          <label className="lang-select" title={t("language")}>
+            <span className="sr-only">{t("language")}</span>
+            <select
+              value={lang}
+              onChange={(e) => setLang(e.target.value as Lang)}
+              aria-label={t("language")}
+            >
+              <option value="en">EN</option>
+              <option value="hi">हिंदी</option>
+              <option value="mr">मराठी</option>
+            </select>
+          </label>
+          <Link href="/#menu">{t("vegetables")}</Link>
+          <Link href="/cart">
+            {t("cart")}
+            {cartCount > 0 ? ` (${cartCount})` : ""}
+          </Link>
           {user ? (
             <>
-              <Link href="/orders">My Orders</Link>
-              {user.role === "ADMIN" && <Link href="/admin">Admin</Link>}
+              <Link href="/orders">{t("myOrders")}</Link>
+              {user.role === "ADMIN" && <Link href="/admin">{t("admin")}</Link>}
               <button type="button" className="link-btn" onClick={logout}>
-                Logout
+                {t("logout")}
               </button>
             </>
           ) : (
             <>
-              <Link href="/login">Sign in</Link>
+              <Link href="/login">{t("signIn")}</Link>
               <Link href="/register" className="btn btn-sm">
-                Sign up
+                {t("signUp")}
               </Link>
             </>
           )}

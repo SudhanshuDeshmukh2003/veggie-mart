@@ -62,7 +62,7 @@ model OrderItem {
 
 model ShopSettings {
   id            Int    @id @default(1)
-  shopName      String @default("Fresh Veg Mart")
+  shopName      String @default("Sabzi Bazaar")
   adminWhatsapp String @default("")
   upiId         String @default("")
   upiName       String @default("")

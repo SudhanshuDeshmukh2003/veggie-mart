@@ -9,8 +9,11 @@ import {
   readCart,
   updateCartQty,
 } from "@/lib/cart";
+import { useI18n } from "@/lib/i18n";
+import { KG_QTY_OPTIONS, PIECE_QTY_OPTIONS, nearestQtyOption } from "@/lib/qty";
 
 export default function CartPage() {
+  const { t, qtyLabel } = useI18n();
   const [items, setItems] = useState<CartItem[]>([]);
 
   useEffect(() => {
@@ -26,10 +29,10 @@ export default function CartPage() {
     return (
       <div className="panel">
         <div className="card-form">
-          <h1>Your cart is empty</h1>
-          <p>Add some vegetables to get started.</p>
+          <h1>{t("cartEmpty")}</h1>
+          <p>{t("cartEmptySub")}</p>
           <Link href="/#menu" className="btn">
-            Browse vegetables
+            {t("browseVeg")}
           </Link>
         </div>
       </div>
@@ -39,39 +42,60 @@ export default function CartPage() {
   return (
     <div className="panel" style={{ maxWidth: 800 }}>
       <div className="card-form">
-        <h1>Your cart</h1>
-        <p>Adjust quantities, then proceed to checkout.</p>
+        <h1>{t("yourCart")}</h1>
+        <p>{t("cartSub")}</p>
         <div className="cart-list">
-          {items.map((item) => (
-            <div key={item.vegetableId} className="cart-row">
-              <div className="veg-emoji">{item.emoji}</div>
-              <div>
-                <strong>{item.name}</strong>
+          {items.map((item) => {
+            const current = nearestQtyOption(item.quantity, item.unit);
+            const options =
+              item.unit === "kg"
+                ? KG_QTY_OPTIONS.map((o) => ({
+                    value: o.value,
+                    label: t(o.labelKey),
+                  }))
+                : PIECE_QTY_OPTIONS.map((n) => ({
+                    value: n,
+                    label: `${n} ${item.unit}`,
+                  }));
+
+            return (
+              <div key={item.vegetableId} className="cart-row">
+                <div className="veg-emoji">{item.emoji}</div>
                 <div>
-                  ₹{item.price} / {item.unit}
+                  <strong>{item.name}</strong>
+                  <div>
+                    ₹{item.price} / {item.unit} · {qtyLabel(current, item.unit)}
+                  </div>
+                  <div style={{ marginTop: "0.35rem", fontSize: "0.9rem" }}>
+                    Line: ₹{(item.price * current).toFixed(0)}
+                  </div>
+                </div>
+                <div className="qty-controls">
+                  <select
+                    value={current}
+                    onChange={(e) =>
+                      updateCartQty(item.vegetableId, Number(e.target.value))
+                    }
+                    aria-label="Quantity"
+                    style={{ minWidth: 110 }}
+                  >
+                    {options.map((o) => (
+                      <option key={o.value} value={o.value}>
+                        {o.label}
+                      </option>
+                    ))}
+                  </select>
+                  <button
+                    type="button"
+                    className="btn btn-sm btn-ghost"
+                    onClick={() => updateCartQty(item.vegetableId, 0)}
+                  >
+                    ×
+                  </button>
                 </div>
               </div>
-              <div className="qty-controls">
-                <button
-                  type="button"
-                  onClick={() =>
-                    updateCartQty(item.vegetableId, item.quantity - 0.5)
-                  }
-                >
-                  −
-                </button>
-                <span>{item.quantity}</span>
-                <button
-                  type="button"
-                  onClick={() =>
-                    updateCartQty(item.vegetableId, item.quantity + 0.5)
-                  }
-                >
-                  +
-                </button>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
         <div
           style={{
@@ -83,13 +107,19 @@ export default function CartPage() {
             flexWrap: "wrap",
           }}
         >
-          <strong style={{ fontSize: "1.2rem" }}>Total: ₹{total.toFixed(0)}</strong>
+          <strong style={{ fontSize: "1.2rem" }}>
+            {t("total")}: ₹{total.toFixed(0)}
+          </strong>
           <div style={{ display: "flex", gap: "0.5rem" }}>
-            <button type="button" className="btn btn-ghost" onClick={() => clearCart()}>
-              Clear cart
+            <button
+              type="button"
+              className="btn btn-ghost"
+              onClick={() => clearCart()}
+            >
+              {t("clearCart")}
             </button>
             <Link href="/checkout" className="btn">
-              Checkout
+              {t("checkout")}
             </Link>
           </div>
         </div>

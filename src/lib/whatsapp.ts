@@ -17,19 +17,30 @@ type OrderMessageInput = {
 
 export function buildOrderWhatsAppMessage(order: OrderMessageInput) {
   const lines = [
-    `🛒 *New Order — Fresh Veg Mart*`,
+    `🛒 *New Order — Sabzi Bazaar*`,
     `Order ID: ${order.orderId.slice(-8).toUpperCase()}`,
     ``,
     `👤 ${order.customerName}`,
     `📞 ${order.customerPhone}`,
     `📍 ${order.address}`,
-    `💳 Payment: ${order.paymentMethod}`,
+    `💳 Payment: COD (Cash on Delivery)`,
     ``,
     `*Items:*`,
-    ...order.items.map(
-      (item) =>
-        `• ${item.name} — ${item.quantity} ${item.unit} × ₹${item.price} = ₹${item.lineTotal.toFixed(0)}`,
-    ),
+    ...order.items.map((item) => {
+      const qtyLabel =
+        item.unit === "kg"
+          ? Math.abs(item.quantity - 0.5) < 0.001
+            ? "½ kg (500 g)"
+            : Math.abs(item.quantity - 0.25) < 0.001
+              ? "250 g"
+              : Math.abs(item.quantity - 0.125) < 0.001
+                ? "125 g"
+                : item.quantity >= 0.99
+                  ? `${item.quantity} kg`
+                  : `${Math.round(item.quantity * 1000)} g`
+          : `${item.quantity} ${item.unit}`;
+      return `• ${item.name} — ${qtyLabel} × ₹${item.price}/${item.unit} = ₹${item.lineTotal.toFixed(0)}`;
+    }),
     ``,
     `*Total: ₹${order.totalAmount.toFixed(0)}*`,
   ];
@@ -53,6 +64,6 @@ export function getAdminWhatsApp() {
 export function getShopUpi() {
   return {
     upiId: process.env.SHOP_UPI_ID || "",
-    upiName: process.env.SHOP_UPI_NAME || "Fresh Veg Mart",
+    upiName: process.env.SHOP_UPI_NAME || "Sabzi Bazaar",
   };
 }

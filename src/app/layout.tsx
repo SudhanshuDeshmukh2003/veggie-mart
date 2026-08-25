@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Fraunces, Manrope } from "next/font/google";
 import { SiteHeader } from "@/components/SiteHeader";
+import { LanguageProvider } from "@/lib/i18n";
 import "./globals.css";
 
 const display = Fraunces({
@@ -14,17 +15,19 @@ const body = Manrope({
 });
 
 export const metadata: Metadata = {
-  title: "Fresh Veg Mart — Daily vegetables delivery",
+  title: "Sabzi Bazaar — Fresh vegetables, COD delivery",
   description:
-    "Order fresh vegetables online. Daily prices, COD or UPI payment, WhatsApp order alerts for the shop.",
+    "Order fresh vegetables at daily market rates. Cash on delivery. WhatsApp order alerts for the shop.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={`${display.variable} ${body.variable} h-full`}>
       <body className="min-h-full flex flex-col antialiased">
-        <SiteHeader />
-        <main className="flex-1">{children}</main>
+        <LanguageProvider>
+          <SiteHeader />
+          <main className="flex-1">{children}</main>
+        </LanguageProvider>
       </body>
     </html>
   );

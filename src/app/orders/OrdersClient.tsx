@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import { useI18n } from "@/lib/i18n";
+import { formatQuantity } from "@/lib/qty";
 
 type Order = {
   id: string;
@@ -21,6 +23,7 @@ type Order = {
 };
 
 export default function OrdersClient() {
+  const { t } = useI18n();
   const params = useSearchParams();
   const placed = params.get("placed");
   const [orders, setOrders] = useState<Order[]>([]);
@@ -39,25 +42,20 @@ export default function OrdersClient() {
   return (
     <div className="panel" style={{ maxWidth: 800 }}>
       <div className="card-form">
-        <h1>My orders</h1>
-        {placed && (
-          <p style={{ color: "var(--leaf)" }}>
-            Order placed successfully! A WhatsApp alert was opened for the shop,
-            and the order also appears in the admin dashboard.
-          </p>
-        )}
+        <h1>{t("myOrdersTitle")}</h1>
+        {placed && <p style={{ color: "var(--leaf)" }}>{t("orderPlaced")}</p>}
         {error && (
           <p className="error">
             {error === "Unauthorized" || error.includes("Login") ? (
               <>
-                Please <Link href="/login">sign in</Link> to view your orders.
+                {t("pleaseLogin")} <Link href="/login">{t("signIn")}</Link>
               </>
             ) : (
               error
             )}
           </p>
         )}
-        {orders.length === 0 && !error && <p>No orders yet.</p>}
+        {orders.length === 0 && !error && <p>{t("noOrders")}</p>}
         {orders.map((order) => (
           <div key={order.id} className="order-card">
             <div
@@ -72,14 +70,14 @@ export default function OrdersClient() {
               <span className="badge">{order.status.replaceAll("_", " ")}</span>
             </div>
             <div style={{ fontSize: "0.9rem", marginTop: "0.35rem" }}>
-              {new Date(order.createdAt).toLocaleString()} · {order.paymentMethod}{" "}
-              ({order.paymentStatus}) · ₹{order.totalAmount.toFixed(0)}
+              {new Date(order.createdAt).toLocaleString()} · COD · ₹
+              {order.totalAmount.toFixed(0)}
             </div>
             <ul style={{ margin: "0.6rem 0 0", paddingLeft: "1.1rem" }}>
               {order.items.map((item, idx) => (
                 <li key={idx}>
-                  {item.vegetableName} — {item.quantity} {item.unit} (₹
-                  {item.lineTotal.toFixed(0)})
+                  {item.vegetableName} — {formatQuantity(item.quantity, item.unit)}{" "}
+                  (₹{item.lineTotal.toFixed(0)})
                 </li>
               ))}
             </ul>
