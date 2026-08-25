@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Fraunces, Manrope } from "next/font/google";
 import { SiteHeader } from "@/components/SiteHeader";
 import { LanguageProvider } from "@/lib/i18n";
+import { ThemeProvider } from "@/lib/theme";
 import "./globals.css";
 
 const display = Fraunces({
@@ -22,12 +23,18 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${display.variable} ${body.variable} h-full`}>
+    <html
+      lang="en"
+      className={`${display.variable} ${body.variable} h-full`}
+      suppressHydrationWarning
+    >
       <body className="min-h-full flex flex-col antialiased">
-        <LanguageProvider>
-          <SiteHeader />
-          <main className="flex-1">{children}</main>
-        </LanguageProvider>
+        <ThemeProvider>
+          <LanguageProvider>
+            <SiteHeader />
+            <main className="flex-1">{children}</main>
+          </LanguageProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

@@ -3,17 +3,31 @@
 import Link from "next/link";
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useTheme } from "@/lib/theme";
 
 export default function RegisterPage() {
   const router = useRouter();
+  const { theme, setTheme } = useTheme();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setError("");
-    setLoading(true);
     const form = new FormData(e.currentTarget);
+    const password = String(form.get("password") || "");
+    const confirm = String(form.get("confirmPassword") || "");
+
+    if (password !== confirm) {
+      setError("Passwords do not match");
+      return;
+    }
+
+    setLoading(true);
+    const firstName = String(form.get("firstName") || "").trim();
+    const middleName = String(form.get("middleName") || "").trim();
+    const lastName = String(form.get("lastName") || "").trim();
+    const name = [firstName, middleName, lastName].filter(Boolean).join(" ");
 
     try {
       const res = await fetch("/api/auth", {
@@ -21,11 +35,15 @@ export default function RegisterPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           action: "register",
-          name: form.get("name"),
+          firstName,
+          middleName,
+          lastName,
+          name,
           email: form.get("email"),
           phone: form.get("phone"),
           address: form.get("address"),
-          password: form.get("password"),
+          password,
+          confirmPassword: confirm,
         }),
       });
       const data = await res.json();
@@ -46,12 +64,43 @@ export default function RegisterPage() {
     <div className="panel">
       <form className="card-form" onSubmit={onSubmit}>
         <h1>Create account</h1>
-        <p>Sign up to browse vegetables and place orders.</p>
+        <p>Sign up to browse vegetables and place COD orders.</p>
+
+        <div className="theme-choice" role="group" aria-label="Theme">
+          <span className="theme-choice-label">Theme</span>
+          <div className="theme-choice-btns">
+            <button
+              type="button"
+              className={`theme-chip ${theme === "light" ? "active" : ""}`}
+              onClick={() => setTheme("light")}
+            >
+              Light
+            </button>
+            <button
+              type="button"
+              className={`theme-chip ${theme === "dark" ? "active" : ""}`}
+              onClick={() => setTheme("dark")}
+            >
+              Dark
+            </button>
+          </div>
+        </div>
+
         <div className="form-grid">
-          <label>
-            Full name
-            <input name="name" required minLength={2} placeholder="Your name" />
-          </label>
+          <div className="name-row">
+            <label>
+              First name
+              <input name="firstName" required minLength={1} placeholder="First" />
+            </label>
+            <label>
+              Middle name
+              <input name="middleName" placeholder="Middle (optional)" />
+            </label>
+            <label>
+              Last name
+              <input name="lastName" required minLength={1} placeholder="Last" />
+            </label>
+          </div>
           <label>
             Email
             <input name="email" type="email" required placeholder="you@email.com" />
@@ -77,6 +126,10 @@ export default function RegisterPage() {
           <label>
             Password
             <input name="password" type="password" required minLength={6} />
+          </label>
+          <label>
+            Re-enter password
+            <input name="confirmPassword" type="password" required minLength={6} />
           </label>
           {error && <p className="error">{error}</p>}
           <button className="btn" type="submit" disabled={loading}>

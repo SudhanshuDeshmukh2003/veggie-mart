@@ -6,19 +6,19 @@ async function main() {
   await prisma.shopSettings.upsert({
     where: { id: 1 },
     update: {
-      adminWhatsapp: "919325667461",
+      adminWhatsapp: "917517571339",
       shopName: "Sabzi Bazaar",
       upiName: "Sabzi Bazaar",
     },
     create: {
       id: 1,
-      adminWhatsapp: "919325667461",
+      adminWhatsapp: "917517571339",
       shopName: "Sabzi Bazaar",
       upiId: "veggieshop@upi",
       upiName: "Sabzi Bazaar",
     },
   });
-  console.log("Shop settings updated — Sabzi Bazaar / WhatsApp 919325667461");
+  console.log("Shop settings updated — Sabzi Bazaar / WhatsApp 917517571339");
 }
 
 main()

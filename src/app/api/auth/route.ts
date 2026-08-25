@@ -8,13 +8,22 @@ import {
 } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 
-const registerSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters"),
-  email: z.string().email("Enter a valid email address"),
-  phone: z.string().min(10, "Phone must be at least 10 digits").max(15),
-  address: z.string().min(5, "Address must be at least 5 characters"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
-});
+const registerSchema = z
+  .object({
+    firstName: z.string().min(1, "First name is required"),
+    middleName: z.string().optional(),
+    lastName: z.string().min(1, "Last name is required"),
+    name: z.string().optional(),
+    email: z.string().email("Enter a valid email address"),
+    phone: z.string().min(10, "Phone must be at least 10 digits").max(15),
+    address: z.string().min(5, "Address must be at least 5 characters"),
+    password: z.string().min(6, "Password must be at least 6 characters"),
+    confirmPassword: z.string().min(6, "Please re-enter your password"),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });
 
 const loginSchema = z.object({
   email: z.string().email("Enter a valid email address"),
@@ -40,9 +49,17 @@ export async function POST(req: Request) {
         );
       }
 
+      const fullName = [
+        data.firstName.trim(),
+        data.middleName?.trim(),
+        data.lastName.trim(),
+      ]
+        .filter(Boolean)
+        .join(" ");
+
       const user = await prisma.user.create({
         data: {
-          name: data.name.trim(),
+          name: fullName,
           email: data.email.toLowerCase().trim(),
           phone: data.phone.trim(),
           address: data.address.trim(),

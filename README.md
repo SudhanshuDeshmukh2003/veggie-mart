@@ -1,6 +1,6 @@
-# Fresh Veg Mart
+# Sabzi Bazaar
 
-Live vegetable ordering site with **Admin** + **Customer** roles, daily prices, COD/UPI checkout, WhatsApp alerts, and a **hosted PostgreSQL** database for real orders.
+Live vegetable ordering site with **Admin** + **Customer** roles, daily prices, COD checkout, WhatsApp alerts, and a **hosted PostgreSQL** database for real orders.
 
 ## Local setup
 
@@ -20,21 +20,16 @@ npm run dev
 
 Open http://localhost:3000
 
-### Demo logins
-
-| Role  | Email           | Password |
-|-------|-----------------|----------|
-| Admin | admin@sabzi.com | admin123 |
-| User  | user@sabzi.com  | user123  |
+Create an account from **Sign up** (first / middle / last name + password confirm).
 
 ### Env vars
 
 ```
 DATABASE_URL=postgresql://...
 AUTH_SECRET=long-random-secret
-ADMIN_WHATSAPP=91XXXXXXXXXX
+ADMIN_WHATSAPP=917517571339
 SHOP_UPI_ID=yourshop@upi
-SHOP_UPI_NAME=Fresh Veg Mart
+SHOP_UPI_NAME=Sabzi Bazaar
 ```
 
 ## Deploy on Vercel (recommended)

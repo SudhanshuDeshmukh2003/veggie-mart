@@ -59,7 +59,7 @@ async function main() {
     data: {
       id: 1,
       shopName: "Sabzi Bazaar",
-      adminWhatsapp: process.env.ADMIN_WHATSAPP || "919325667461",
+      adminWhatsapp: process.env.ADMIN_WHATSAPP || "917517571339",
       upiId: process.env.SHOP_UPI_ID || "veggieshop@upi",
       upiName: process.env.SHOP_UPI_NAME || "Sabzi Bazaar",
     },

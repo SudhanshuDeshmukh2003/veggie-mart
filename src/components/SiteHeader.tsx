@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { readCart } from "@/lib/cart";
 import { useI18n, type Lang } from "@/lib/i18n";
+import { useTheme } from "@/lib/theme";
 
 type User = {
   id: string;
@@ -14,6 +15,7 @@ type User = {
 
 export function SiteHeader() {
   const { t, lang, setLang } = useI18n();
+  const { theme, toggleTheme } = useTheme();
   const [user, setUser] = useState<User>(null);
   const [cartCount, setCartCount] = useState(0);
 
@@ -55,6 +57,15 @@ export function SiteHeader() {
         </Link>
 
         <nav className="nav-links">
+          <button
+            type="button"
+            className="theme-toggle"
+            onClick={toggleTheme}
+            aria-label={theme === "dark" ? "Switch to light theme" : "Switch to dark theme"}
+            title={theme === "dark" ? "Light" : "Dark"}
+          >
+            {theme === "dark" ? "☀️" : "🌙"}
+          </button>
           <label className="lang-select" title={t("language")}>
             <span className="sr-only">{t("language")}</span>
             <select

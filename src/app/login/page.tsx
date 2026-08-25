@@ -43,10 +43,7 @@ export default function LoginPage() {
     <div className="panel">
       <form className="card-form" onSubmit={onSubmit}>
         <h1>Sign in</h1>
-        <p>
-          Demo accounts: <code>admin@sabzi.com</code> / <code>admin123</code> or{" "}
-          <code>user@sabzi.com</code> / <code>user123</code>
-        </p>
+        <p>Enter your email and password to continue.</p>
         <div className="form-grid">
           <label>
             Email
