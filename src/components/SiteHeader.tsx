@@ -64,7 +64,7 @@ export function SiteHeader() {
             aria-label={theme === "dark" ? "Switch to light theme" : "Switch to dark theme"}
             title={theme === "dark" ? "Light" : "Dark"}
           >
-            {theme === "dark" ? "☀️" : "🌙"}
+            {theme === "dark" ? "Light" : "Dark"}
           </button>
           <label className="lang-select" title={t("language")}>
             <span className="sr-only">{t("language")}</span>

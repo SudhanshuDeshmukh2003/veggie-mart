@@ -7,12 +7,15 @@
   --mist: #e8f0ea;
   --cream: #f7f4ef;
   --soil: #2a241c;
+  --muted: rgba(42, 36, 28, 0.72);
   --accent: #c45c26;
-  --card: rgba(255, 255, 255, 0.72);
+  --card: rgba(255, 255, 255, 0.88);
   --line: rgba(31, 77, 58, 0.14);
   --shadow: 0 18px 40px rgba(20, 53, 40, 0.08);
-  --header-bg: rgba(244, 247, 244, 0.82);
-  --input-bg: #fff;
+  --header-bg: rgba(244, 247, 244, 0.9);
+  --input-bg: #ffffff;
+  --on-leaf: #f7fbf8;
+  --danger: #a33b1f;
   --page-bg:
     radial-gradient(ellipse 80% 50% at 10% -10%, #d9ebe0 0%, transparent 55%),
     radial-gradient(ellipse 60% 40% at 100% 0%, #f0e2d4 0%, transparent 45%),
@@ -22,22 +25,25 @@
 }
 
 html[data-theme="dark"] {
-  --leaf: #6fbf8f;
-  --leaf-deep: #c8ecd6;
-  --sprout: #7dcea0;
-  --mist: #1c2a22;
-  --cream: #121816;
-  --soil: #e8efe9;
-  --accent: #e0894f;
-  --card: rgba(22, 32, 27, 0.88);
-  --line: rgba(125, 206, 160, 0.2);
-  --shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
-  --header-bg: rgba(12, 18, 15, 0.9);
-  --input-bg: #18231d;
+  --leaf: #3d8f66;
+  --leaf-deep: #e6f4ec;
+  --sprout: #5aad7e;
+  --mist: #1a2820;
+  --cream: #101612;
+  --soil: #e9f2ec;
+  --muted: rgba(233, 242, 236, 0.72);
+  --accent: #e0a06a;
+  --card: #16201a;
+  --line: rgba(90, 173, 126, 0.28);
+  --shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
+  --header-bg: rgba(12, 18, 15, 0.94);
+  --input-bg: #1c2922;
+  --on-leaf: #f4fbf7;
+  --danger: #ff8f7a;
   --page-bg:
-    radial-gradient(ellipse 70% 45% at 10% -10%, #1a3328 0%, transparent 55%),
-    radial-gradient(ellipse 50% 35% at 100% 0%, #2a2218 0%, transparent 45%),
-    linear-gradient(180deg, #0e1411 0%, #121816 50%, #0f1512 100%);
+    radial-gradient(ellipse 70% 40% at 8% -8%, #1a3a2a 0%, transparent 50%),
+    radial-gradient(ellipse 50% 30% at 100% 0%, #2a2418 0%, transparent 42%),
+    linear-gradient(180deg, #0c110e 0%, #121916 55%, #0e1411 100%);
   color-scheme: dark;
 }
 
@@ -137,7 +143,7 @@ a {
   border-radius: 999px;
   padding: 0.75rem 1.35rem;
   background: var(--leaf);
-  color: #f7fbf8;
+  color: var(--on-leaf);
   font: inherit;
   font-weight: 600;
   cursor: pointer;
@@ -206,7 +212,7 @@ a {
   max-width: 34rem;
   font-size: 1.08rem;
   line-height: 1.55;
-  color: rgba(42, 36, 28, 0.78);
+  color: var(--muted);
 }
 
 .hero-actions {
@@ -282,7 +288,7 @@ a {
 
 .section-head p {
   margin: 0.4rem 0 0;
-  color: rgba(42, 36, 28, 0.7);
+  color: var(--muted);
 }
 
 .veg-grid {
@@ -324,7 +330,7 @@ a {
 
 .qty-pill {
   border: 1px solid var(--line);
-  background: #fff;
+  background: var(--input-bg);
   border-radius: 999px;
   padding: 0.35rem 0.7rem;
   font: inherit;
@@ -337,7 +343,7 @@ a {
 .qty-pill.active {
   background: var(--leaf);
   border-color: var(--leaf);
-  color: #f7fbf8;
+  color: var(--on-leaf);
 }
 
 .qty-pill:disabled {
@@ -355,16 +361,20 @@ a {
 }
 
 .theme-toggle {
-  width: 2.2rem;
+  min-width: 3.4rem;
   height: 2.2rem;
   border-radius: 999px;
   border: 1px solid var(--line);
   background: var(--input-bg);
+  color: var(--soil);
   cursor: pointer;
-  font-size: 1rem;
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 700;
   line-height: 1;
   display: inline-grid;
   place-items: center;
+  padding: 0 0.55rem;
 }
 
 .theme-choice {
@@ -404,7 +414,7 @@ a {
 .theme-chip.active {
   background: var(--leaf);
   border-color: var(--leaf);
-  color: #f7fbf8;
+  color: var(--on-leaf);
 }
 
 .name-row {
@@ -454,7 +464,7 @@ a {
 .veg-meta p {
   margin: 0.2rem 0 0.7rem;
   font-size: 0.85rem;
-  color: rgba(42, 36, 28, 0.65);
+  color: var(--muted);
 }
 
 .veg-price-row {
@@ -466,7 +476,7 @@ a {
 
 .veg-price-row strong span {
   font-weight: 500;
-  color: rgba(42, 36, 28, 0.55);
+  color: var(--muted);
   font-size: 0.85rem;
 }
 
@@ -476,7 +486,7 @@ a {
   left: 50%;
   transform: translateX(-50%);
   background: var(--leaf-deep);
-  color: white;
+  color: var(--on-leaf);
   padding: 0.75rem 1.2rem;
   border-radius: 999px;
   font-size: 0.92rem;
@@ -494,7 +504,7 @@ a {
   padding: 1.5rem;
   border-radius: 1.4rem;
   border: 1px solid var(--line);
-  background: rgba(255, 255, 255, 0.8);
+  background: var(--card);
   box-shadow: var(--shadow);
 }
 
@@ -506,7 +516,7 @@ a {
 
 .card-form > p {
   margin: 0 0 1.25rem;
-  color: rgba(42, 36, 28, 0.65);
+  color: var(--muted);
 }
 
 .form-grid {
@@ -539,7 +549,7 @@ textarea {
 }
 
 .error {
-  color: #a33b1f;
+  color: var(--danger);
   font-size: 0.9rem;
 }
 
@@ -547,7 +557,7 @@ textarea {
   overflow-x: auto;
   border: 1px solid var(--line);
   border-radius: 1.2rem;
-  background: rgba(255, 255, 255, 0.75);
+  background: var(--card);
 }
 
 table {
@@ -587,12 +597,12 @@ th {
   padding: 0.5rem 1rem;
   border-radius: 999px;
   border: 1px solid var(--line);
-  background: rgba(255, 255, 255, 0.6);
+  background: var(--card);
 }
 
 .admin-tabs a.active {
   background: var(--leaf);
-  color: white;
+  color: var(--on-leaf);
   border-color: var(--leaf);
 }
 
@@ -608,7 +618,7 @@ th {
   padding: 0.9rem 1rem;
   border: 1px solid var(--line);
   border-radius: 1rem;
-  background: #fff;
+  background: var(--input-bg);
   cursor: pointer;
 }
 
@@ -643,7 +653,7 @@ th {
   padding: 0.9rem 1rem;
   border-radius: 1rem;
   border: 1px solid var(--line);
-  background: rgba(255, 255, 255, 0.75);
+  background: var(--card);
 }
 
 .qty-controls {
@@ -657,7 +667,7 @@ th {
   height: 2rem;
   border-radius: 999px;
   border: 1px solid var(--line);
-  background: white;
+  background: var(--input-bg);
   cursor: pointer;
 }
 
@@ -665,7 +675,7 @@ th {
   padding: 1rem 1.1rem;
   border-radius: 1.1rem;
   border: 1px solid var(--line);
-  background: rgba(255, 255, 255, 0.78);
+  background: var(--card);
   margin-bottom: 0.85rem;
 }
 
